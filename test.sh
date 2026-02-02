@@ -1,0 +1,4 @@
+/usr/bin/env /usr/lib/jvm/java-17-openjdk-amd64/bin/java -XX:+ShowCodeDetailsInExceptionMessages -cp /media/debian/AVIRA\ RESCU/2DAM/PSP/carreradecaballos/target/classes es.etg.dam.psp.cliente.Cliente Juan &
+/usr/bin/env /usr/lib/jvm/java-17-openjdk-amd64/bin/java -XX:+ShowCodeDetailsInExceptionMessages -cp /media/debian/AVIRA\ RESCU/2DAM/PSP/carreradecaballos/target/classes es.etg.dam.psp.cliente.Cliente Pepe &
+/usr/bin/env /usr/lib/jvm/java-17-openjdk-amd64/bin/java -XX:+ShowCodeDetailsInExceptionMessages -cp /media/debian/AVIRA\ RESCU/2DAM/PSP/carreradecaballos/target/classes es.etg.dam.psp.cliente.Cliente Lucas &
+/usr/bin/env /usr/lib/jvm/java-17-openjdk-amd64/bin/java -XX:+ShowCodeDetailsInExceptionMessages -cp /media/debian/AVIRA\ RESCU/2DAM/PSP/carreradecaballos/target/classes es.etg.dam.psp.cliente.Cliente Antonio &
