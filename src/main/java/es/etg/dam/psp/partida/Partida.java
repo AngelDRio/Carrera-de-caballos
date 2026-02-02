@@ -13,18 +13,19 @@ public class Partida implements Runnable {
     public static final int TIEMPO_ESPERA_INICIO = 2000;
     public static final int TIEMPO_ESPERA_PUNTOS = 500;
 
+    public static final int UNO = 1;
+    public static final int CERO = 0;
+
     public static final String MSG_NOTIFICACION_AVANCE = "%s|%s: %d puntos";
     public static final String MSG_VICTORIA = "%s --> ENHORABUENA, HAS GANADO";
     public static final String MSG_DERROTA = "%s --> GAME OVER";
 
-    public static final int MAX_PUNTOS_ENTREGADOS = 11;
+    public static final int MAX_PUNTOS_ENTREGADOS = 10;
 
     private List<Jugador> jugadores;
-    private Random random;
 
     public Partida() {
         jugadores = new ArrayList<>();
-        random = new Random();
     }
 
     public void registrarJugador(String nombre, Socket socket) {
@@ -65,13 +66,22 @@ public class Partida implements Runnable {
     }
 
     private Jugador avanzar() {
-        int indice = random.nextInt(jugadores.size());
-        int puntos = random.nextInt(MAX_PUNTOS_ENTREGADOS);
+        Jugador j = jugadorAleatorio();
+        int puntos = generarPuntos(UNO, MAX_PUNTOS_ENTREGADOS);
 
-        Jugador j = jugadores.get(indice);
         j.sumar(puntos);
 
         return j;
+    }
+
+    private int generarPuntos(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + UNO) + min;
+    }
+
+    private Jugador jugadorAleatorio() {
+        int posicion = generarPuntos(CERO, jugadores.size() - UNO);
+        return jugadores.get(posicion);
     }
 
     private void notificar() throws IOException {
@@ -82,20 +92,18 @@ public class Partida implements Runnable {
     }
 
     private String estadoCarrera(){
-        String mensaje = " ";
+        String mensaje = "";
         for (Jugador j : jugadores) {
             mensaje = String.format(MSG_NOTIFICACION_AVANCE, mensaje, j.getNombre(), j.getPuntos());
         }
         return mensaje;
     }
 
-    private void finalizarJuego(Jugador ganador) throws IOException {//intentar hacerlo con operador ternario paraevitar codigo repetido
+    private void finalizarJuego(Jugador ganador) throws IOException {
         for (Jugador j : jugadores) {
-            if (j == ganador) {
-                Conexion.enviar(String.format(MSG_VICTORIA, j.getNombre()), j.getSocket());
-            } else {
-                Conexion.enviar(String.format(MSG_DERROTA, j.getNombre()), j.getSocket());
-            }
+            String mensaje = (j == ganador) ? String.format(MSG_VICTORIA, j.getNombre()) : String.format(MSG_DERROTA, j.getNombre());
+            Conexion.enviar(mensaje, j.getSocket());
+            j.getSocket().close();
         }
     }
 }
