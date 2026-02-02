@@ -14,8 +14,8 @@ public class Partida implements Runnable {
     public static final int TIEMPO_ESPERA_PUNTOS = 500;
 
     public static final String MSG_NOTIFICACION_AVANCE = "%s|%s: %d puntos";
-    public static final String MSG_VICTORIA = "ENHORABUENA, HAS GANADO";
-    public static final String MSG_DERROTA = "GAME OVER";
+    public static final String MSG_VICTORIA = "%s --> ENHORABUENA, HAS GANADO";
+    public static final String MSG_DERROTA = "%s --> GAME OVER";
 
     public static final int MAX_PUNTOS_ENTREGADOS = 11;
 
@@ -92,9 +92,9 @@ public class Partida implements Runnable {
     private void finalizarJuego(Jugador ganador) throws IOException {//intentar hacerlo con operador ternario paraevitar codigo repetido
         for (Jugador j : jugadores) {
             if (j == ganador) {
-                Conexion.enviar(MSG_VICTORIA, j.getSocket());
+                Conexion.enviar(String.format(MSG_VICTORIA, j.getNombre()), j.getSocket());
             } else {
-                Conexion.enviar(MSG_DERROTA, j.getSocket());
+                Conexion.enviar(String.format(MSG_DERROTA, j.getNombre()), j.getSocket());
             }
         }
     }
